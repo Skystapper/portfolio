@@ -1,0 +1,20 @@
+{
+  "name": "discord-dialog-extractor",
+  "version": "1.0.0",
+  "description": "Extract a specific div from a Discord HTML file",
+  "main": "extract-dialog-cli.js",
+  "bin": {
+    "discord-extractor": "./extract-dialog-cli.js"
+  },
+  "dependencies": {
+    "jsdom": "^22.1.0"
+  },
+  "scripts": {
+    "extract": "node extract-dialog-cli.js",
+    "extract-basic": "node extract-discord-div.js",
+    "extract-advanced": "node extract-advanced.js",
+    "extract-dialog-only": "node extract-dialog-only.js",
+    "extract-simple": "node extract-dialog-simple.js",
+    "extract-final": "node extract-dialog-final.js"
+  }
+} 

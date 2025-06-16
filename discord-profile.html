@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Profile Card</title>
+    <style>
+        @font-face {
+            font-family: 'Discord Font';
+            src: url('fonts/discord-font-1.woff2') format('woff2'),
+                 url('fonts/discord-font-2.woff2') format('woff2'),
+                 url('fonts/discord-font-3.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --background-primary: #36393f;
+            --background-secondary: #2f3136;
+            --background-tertiary: #202225;
+            --text-normal: #dcddde;
+            --interactive-normal: #b9bbbe;
+            --header-primary: #fff;
+            --header-secondary: #b9bbbe;
+            --channels-default: #96989d;
+
+            /* Cyberpunk theme variables */
+            --profile-gradient-primary-color: hsla(271, 82.2%, 8.8%, 0.95);
+            --profile-gradient-secondary-color: hsla(270, 100%, 66.9%, 0.8);
+            --profile-gradient-overlay-color: rgba(0, 0, 0, 0.6);
+            --profile-gradient-button-color: hsla(267, 18.9%, 41.6%, 1);
+            --theme-base-color-light-hsl: 269.4117647058824 100% 90%;
+            --theme-base-color-light: rgb(229, 204, 255);
+            --theme-text-color-light: rgb(65, 0, 128);
+            --theme-base-color-dark-hsl: 270 100% 5.098039215686274%;
+            --theme-base-color-dark: rgb(13, 0, 26);
+            --theme-text-color-dark: rgb(204, 153, 255);
+            --neon-glow: 0 0 10px rgba(123, 0, 255, 0.8), 0 0 20px rgba(123, 0, 255, 0.4);
+        }
+
+        :where(.outer_c0bea0) {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative
+        }
+
+        .visual-refresh :where(.outer_c0bea0) {
+            background: var(--background-surface-high)
+        }
+
+        :where(.outer_c0bea0).user-profile-popout {
+            border-radius: var(--radius-sm);
+            box-shadow: var(--elevation-high);
+            max-height: calc(100vh - 20px);
+            width: 300px
+        }
+
+        :where(.banner__68edb) {
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: var(--radius-xs) var(--radius-xs)0 0;
+            transition: background-color .1s;
+            width: 100%
+        }
+
+        :where(.banner__68edb):before {
+            border-bottom: 1px solid var(--border-faint);
+            bottom: 0;
+            content: "";
+            position: absolute;
+            width: 100%
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: var(--background-tertiary);
+            color: var(--text-normal);
+            font-family: 'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(
+                45deg,
+                var(--profile-gradient-primary-color),
+                var(--profile-gradient-secondary-color)
+            );
+        }
+
+        .previewsContainerInner_c50f62 {
+            display: flex;
+            flex-direction: column;
+            margin-top: 25px;
+            position: relative
+        }
+
+        :root .user-profile-popout {
+            --custom-user-profile-banner-height: 105px
+        }
+
+        :where(.visual-refresh.custom-theme-background) .channelTextArea__74017 {
+            background: var(--bg-overlay-floating, var(--input-background));
+            border-color: var(--app-border-frame)
+        }
+
+        :where(.visual-refresh) .channelTextArea__74017 {
+            border: 1px solid var(--border-faint);
+            border-radius: var(--radius-sm)
+        }
+
+        :where(.visual-refresh-chat-input) .channelTextArea__74017 {
+            background: var(--bg-overlay-floating, var(--chat-background-default));
+            border: 1px solid var(--border-faint);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-low);
+            box-sizing: border-box;
+            transition: border-color .2s ease
+        }
+
+        :where(.visual-refresh-chat-input) .channelTextArea__74017:focus-within {
+            border-color: var(--border-subtle)
+        }
+
+        .visual-refresh .channelTextArea__74017 {
+            transition: border-color .2s ease
+        }
+
+        .visual-refresh .channelTextArea__74017:focus-within {
+            border-color: var(--border-subtle)
+        }
+
+        .column__5a2c6 {
+            display: flex;
+            flex-direction: column;
+            gap: 32px
+        }
+
+        .outer_c0bea0 {
+            background: linear-gradient(
+                135deg,
+                var(--profile-gradient-primary-color),
+                var(--profile-gradient-secondary-color)
+            );
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--neon-glow);
+            position: relative;
+            border: 1px solid rgba(208, 27, 224, 0.1);
+        }
+
+        .theme-dark {
+            --brightness: calc(1.5 - var(--saturation-factor, 1)*0.5);
+            --contrast: var(--saturation-factor, 1)
+        }
+
+        .theme-dark.theme-darker {
+            --profile-gradient-primary-color: var(--background-surface-high);
+            --profile-gradient-secondary-color: var(--background-surface-high);
+            --profile-gradient-overlay-color: rgba(0, 0, 0, 0);
+        }
+
+        .inner_c0bea0 {
+            border-radius: var(--radius-xs);
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: hidden
+        }
+
+        .user-profile-popout .inner_c0bea0 {
+            gap: 8px;
+            padding-bottom: 4px
+        }
+
+        .header__5a2c6 {
+            min-height: calc(var(--custom-user-profile-banner-height) + 45px);
+            z-index: 2
+        }
+
+        .mask__68edb {
+            contain: paint;
+            z-index: 0
+        }
+
+        .banner__68edb {
+            height: 105px;
+            background-image: url("https://cdn.discordapp.com/banners/908657241505280021/a_fa5aef7c8e1d6936a454c58fab8ec945.gif?size=300");
+            background-color: rgb(23, 4, 41);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner__68edb::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .avatar_d28e10 {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            left: 16px;
+            position: absolute;
+            top: 61px;
+            z-index: 1
+        }
+
+        .wrapper__44b0c {
+            border-radius: 50%;
+            position: relative
+        }
+
+        .wrapper__44b0c {
+            position: relative;
+            display: inline-block;
+            user-select: none;
+            transition: transform 0.3s ease;
+        }
+
+        .wrapper__44b0c:hover {
+            transform: scale(1.05);
+        }
+
+        .mask__44b0c {
+            -webkit-mask-size: 100%;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            overflow: hidden;
+        }
+        .mask__44b0c {
+            display: block;
+            pointer-events: none;
+            width: auto
+        }
+
+        .avatarStack__44b0c {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .avatarStack__44b0c {
+            display: grid;
+            height: 100%;
+            width: 100%
+        }
+
+        .avatar__44b0c {
+            grid-area: 1/1;
+            height: 100%;
+            width: 100%
+        }
+
+        .avatar__44b0c {
+            display: block;
+            object-fit: cover;
+            pointer-events: none
+        }
+
+        .avatar__44b0c:before {
+            background-color: var(--background-modifier-accent);
+            content: "";
+            display: block;
+            height: 100%;
+            width: 100%
+        }
+
+        .avatar__44b0c img[data-original-type="replaced-base64-image"],
+        img.avatar__44b0c[data-original-type="replaced-base64-image"] {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--neon-glow);
+        }
+
+        .body__5be3e {
+            gap: 12px;
+            padding: 4px 16px 8px;
+            
+        }
+
+        .body__5be3e,
+        .footer__5be3e {
+            display: flex;
+            flex-direction: column
+        }
+
+        .container__63ed3 {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text
+        }
+
+        .usernameRow__63ed3 {
+            gap: 8px
+        }
+
+        .tags__63ed3,
+        .usernameRow__63ed3 {
+            align-items: center;
+            display: flex;
+            flex-direction: row
+        }
+
+        .heading-lg\/bold_cf4812 {
+            font-size: 20px;
+            line-height: 24px;
+            font-weight: 600;
+        }
+
+        .defaultColor__4bd52 {
+            color: var(--header-primary);
+        }
+
+        .nickname__63ed3 {
+            color: var(--header-primary);
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+            text-shadow: var(--neon-glow);
+            letter-spacing: 1px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .tags__63ed3 {
+            -moz-column-gap: 9.33px;
+            column-gap: 9.33px;
+            flex-wrap: wrap
+        }
+
+        .info_f4bc97 {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            overflow: hidden;
+            white-space: nowrap
+        }
+
+        .userTagUsername__63ed3 {
+            color: var(--theme-text-color-dark);
+            font-size: 16px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .text-sm\/normal_cf4812 {
+            font-size: 14px;
+            line-height: 18px;
+            color: var(--text-normal);
+            margin-top: 12px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .body__5be3e,
+        .footer__5be3e {
+            display: flex;
+            flex-direction: column
+        }
+
+        .footer__5be3e {
+            padding: 0 16px 12px
+        }
+
+        .footer__5be3e:empty {
+            padding: 0;
+            visibility: hidden
+        }
+
+        .container_a99829 {
+            background-color: rgba(97, 23, 167, 0.8);
+            border-radius: 8px;
+            padding: 0 16px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(53, 5, 63, 0.15);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .emojiButton {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .emojiButton:hover {
+            opacity: 1;
+        }
+
+        .placeholder__1b31f {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+            overflow: hidden;
+            pointer-events: none;
+            text-overflow: ellipsis;
+            user-select: none;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        /* Status indicator styling */
+        .pointerEvents__44b0c {
+            pointer-events: auto
+        }
+
+        g[transform="scale(1) translate(48, 52)"] {
+            position: absolute;
+            z-index: 999 !important;
+            bottom: -4px;
+            right: -4px;
+        }
+
+        g[transform="scale(1) translate(48, 52)"] svg {
+            position: relative;
+            background-color: #43a25a; /* Changed to online status color */
+            border: 4px solid var(--background-surface-high);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            z-index: 999 !important;
+            box-shadow: var(--neon-glow);
+        }
+
+        /* Profile effects */
+        .profileEffects__01370 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            user-select: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .profileEffects__01370 {
+            height: 100%;
+            left: 0;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            /* transition: opacity .6s ease-in-out; */
+            width: 100%;
+            z-index: 2
+        }
+
+        .inner__01370 {
+            border-radius: 8px;
+            height: 100%;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            mix-blend-mode: normal;
+        }
+
+        .effect__01370[data-original-type="replaced-base64-image"] {
+            width: 300px;
+            height: auto;
+            position: absolute;
+        }
+
+        .effect__01370 {
+            position: absolute;
+            width: 100%;
+        }
+
+        @keyframes pulseEffect {
+            0% {
+                transform: scale(0.98);
+            }
+            50% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(0.98);
+            }
+        }
+
+        .avatarDecoration__44b0c {
+            pointer-events: none !important;
+            z-index: 2 !important;
+            display: block !important;
+            position: absolute !important;
+            left: -8px !important; /* Adjust positioning to match Discord's original */
+            top: -8px !important; /* Adjust positioning to match Discord's original */
+        }
+
+        .avatarDecoration__44b0c img[data-original-type="replaced-base64-image"],
+        svg.avatarDecoration__44b0c foreignObject img {
+            object-fit: contain !important;
+            display: block !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        .avatarDecoration__44b0c img[data-original-type="replaced-base64-image"],
+        svg.avatarDecoration__44b0c foreignObject img {
+            width: 108px;
+            height: 96px;
+            object-fit: contain;
+        }
+
+        .user-profile-popout .tags__63ed3 {
+            row-gap: 2px
+        }
+
+        .user-profile-popout .nickname__63ed3 {
+            max-height: 72px
+        }
+
+        .container__8061a {
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            margin: 1px 0;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content
+        }
+
+        .container__8061a:empty {
+            visibility: hidden
+        }
+
+        .badge__8061a {
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            display: block;
+            filter: saturate(var(--saturation-factor, 1));
+            height: 20px;
+            object-fit: cover;
+            overflow: hidden;
+            pointer-events: none;
+            width: 20px
+        }
+
+        .badge__8061a:active {
+            opacity: .8
+        }
+
+        .badge__8061a:before {
+            background-color: var(--user-profile-border);
+            border-radius: 50%;
+            content: "";
+            display: block;
+            height: 100%;
+            width: 100%
+        }
+
+        .badge__8061a[data-original-type="replaced-base64-image"] {
+            width: 24px;
+            height: 24px;
+        }
+
+        .channelTextArea__74017 {
+            border-radius: 8px;
+            position: relative;
+            text-indent: 0;
+            width: 100%
+        }
+
+        .scrollableContainer__74017 {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            max-height: var(--custom-channel-textarea-text-area-max-height);
+            overflow-x: hidden;
+            overflow-y: scroll
+        }
+
+        .scrollableContainer__74017::-webkit-scrollbar {
+            height: 12px;
+            width: 12px
+        }
+
+        .scrollableContainer__74017::-webkit-scrollbar-thumb,
+        .scrollableContainer__74017::-webkit-scrollbar-track {
+            background-clip: padding-box;
+            border: 4px solid transparent
+        }
+
+        .scrollableContainer__74017::-webkit-scrollbar-track {
+            border-width: initial
+        }
+
+        .scrollableContainer__74017::-webkit-scrollbar-thumb {
+            background-color: hsl(var(--primary-800-hsl)/.6);
+            border-radius: 8px
+        }
+    </style>
+</head>
+<body>
+    <!-- Add SVG masks -->
+    <svg style="position: absolute; pointer-events: none; top: -999999px; left: -999999px;" aria-hidden="true">
+        <defs>
+            <mask id="svg-mask-avatar-default" maskContentUnits="objectBoundingBox" viewBox="0 0 1 1">
+                <circle fill="white" cx="0.5" cy="0.5" r="0.5"></circle>
+            </mask><mask id="svg-mask-avatar-status-round-16" maskContentUnits="objectBoundingBox" viewBox="0 0 1 1">
+                <circle fill="white" cx="0.5" cy="0.5" r="0.5"></circle>
+                <circle fill="black" cx="0.8125" cy="0.8125" r="0.3125"></circle>
+            </mask><mask id="svg-mask-avatar-decoration-status-round-16" maskContentUnits="objectBoundingBox" viewBox="0 0 1 1">
+                <rect fill="white" x="0" y="0" width="100%" height="100%"></rect>
+                <circle fill="black" cx="0.7604166666666667" cy="0.7604166666666667" r="0.2604166666666667"></circle>
+            </mask><mask id="svg-mask-avatar-status-round-80" maskContentUnits="objectBoundingBox" viewBox="0 0 1 1">
+                <circle fill="white" cx="0.5" cy="0.5" r="0.5"></circle>
+                <circle fill="black" cx="0.85" cy="0.85" r="0.175"></circle>
+            </mask><mask id="svg-mask-avatar-decoration-status-round-80" maskContentUnits="objectBoundingBox" viewBox="0 0 1 1">
+                <rect fill="white" x="0" y="0" width="100%" height="100%"></rect>
+                <circle fill="black" cx="0.7916666666666667" cy="0.7916666666666667" r="0.14583333333333334"></circle>
+            </mask><mask id="svg-mask-status-online" maskContentUnits="objectBoundingBox" viewBox="0 0 1 1">
+                <circle fill="white" cx="0.5" cy="0.5" r="0.5"></circle>
+            </mask>
+        </defs>
+    </svg>
+    <div class="previewsContainerInner_c50f62">
+        <div class="column__5a2c6">
+            <div class="outer_c0bea0 theme-dark theme-darker images-dark user-profile-popout container__5a2c6" 
+                 style="--profile-gradient-primary-color: hsla(271, 82.2%, 8.8%, 0.95); --profile-gradient-secondary-color: hsla(270, 100%, 66.9%, 0.8); --profile-gradient-overlay-color: rgba(0, 0, 0, 0.6); --profile-gradient-button-color: hsla(267, 18.9%, 41.6%, 1);">
+                <div class="inner_c0bea0">
+                    <header class="header__5a2c6">
+                        <svg class="mask__68edb" viewBox="0 0 300 105" style="min-width: 300px; min-height: 105px;">
+                            <mask id="uid_376">
+                                <rect fill="white" x="0" y="0" width="100%" height="100%"></rect>
+                                <circle fill="black" cx="56" cy="101" r="46"></circle>
+                            </mask>
+                            <foreignObject x="0" y="0" width="100%" height="100%" overflow="visible" mask="url(#uid_376)">
+                                <div class="banner__68edb" style="height: 105px; min-height: 105px;"></div>
+                            </foreignObject>
+                        </svg>
+                        <div class="avatar_d28e10">
+                            <div class="wrapper__44b0c" role="img" aria-label="r.ked, Online" style="width: 80px; height: 80px;">
+                                <svg width="92" height="92" viewBox="0 0 92 92" class="mask__44b0c svg__44b0c">
+                                    <mask id=":ra7:" width="80" height="80">
+                                        <circle cx="40" cy="40" r="40" fill="white"></circle>
+                                        <rect x="54" y="54" width="28" height="28" rx="14" ry="14" fill="black"></rect>
+                                    </mask>
+                                    <foreignObject x="0" y="0" width="80" height="80" mask="url(#:ra7:)">
+                                        <div class="avatarStack__44b0c">
+                                            <img alt=" " class="avatar__44b0c" aria-hidden="true" src="https://cdn.discordapp.com/avatars/908657241505280021/a_771c5b89e3e9ab01ff39200bcf0d8a79.gif?size=80">
+                                        </div>
+                                    </foreignObject>
+                                    <g transform="scale(1) translate(48, 52)">
+                                        <svg width="40" height="24" viewBox="0 0 40 24">
+                                            <mask id=":ra8:">
+                                                <rect x="12" y="8" width="16" height="16" rx="8" ry="8" fill="white"></rect>
+                                                <rect x="20" y="16" width="0" height="0" rx="0" ry="0" fill="black"></rect>
+                                                <polygon points="-3.464096,-4 3.464096,0 -3.464096,4" fill="black" transform="scale(0) translate(21 16)" style="transform-origin: 21px 16px;"></polygon>
+                                                <circle fill="black" cx="20" cy="16" r="0"></circle>
+                                            </mask>
+                                            <rect fill="#43a25a" width="40" height="24" mask="url(#:ra8:)"></rect>
+                                        </svg>
+                                    </g>
+                                </svg>
+                                <!-- Add avatar decoration SVG -->
+                                <svg width="108" height="96" viewBox="0 0 108 96" class="avatarDecoration__44b0c">
+                                    <foreignObject x="0" y="0" width="96" height="96" mask="url(#svg-mask-avatar-decoration-status-round-80)">
+                                        <div class="avatarStack__44b0c">
+                                            <img 
+                                                 alt=" " 
+                                                 src="https://cdn.discordapp.com/avatar-decoration-presets/a_13913a00bd9990ab4102a3bf069f0f3f.png?size=96&passthrough=true"
+                                                 style="width: 96px; height: 96px;">
+                                        </div>
+                                    </foreignObject>
+                                </svg>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="body__5be3e">
+                        <div class="container__63ed3">
+                            <div class="usernameRow__63ed3">
+                                <h2 class="defaultColor__4bd52 heading-lg/bold_cf4812 defaultColor__5345c nickname__63ed3" 
+                                    data-text-variant="heading-lg/bold">R.ked</h2>
+                            </div>
+                            <div class="tags__63ed3">
+                                <div class="info_f4bc97 userTag__63ed3">
+                                    <span class="userTagUsername__63ed3">r.ked</span>
+                                </div>
+                                <div class="container__8061a" aria-label="User Badges" role="group">
+                                    <div aria-label="Originally known as R.ked#1207">
+                                        <a class="anchor_edefb8 anchorUnderlineOnHover_edefb8" role="button" tabindex="0">
+                                            <img alt=" " aria-hidden="true" class="badge__8061a" 
+                                                 src="https://cdn.discordapp.com/badge-icons/6de6d34650760ba5551a79732e98ed60.png">
+                                        </a>
+                                    </div>
+                                    <span style="display: none;"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm/normal_cf4812">
+                                In the end everything exist solely to help us kill some time until we die
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="footer__5be3e">
+                        <div class="container_a99829">
+                            <div class="placeholder__1b31f">Message @R.ked</div>
+                            <div class="emojiButton">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M9 9H9.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15 9H15.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </footer>
+                    <div class="profileEffects__01370">
+                        <div class="inner__01370">
+                            <img alt="Lofi Girl's desk setup appears, showing off her signature headphones, study lamp, laptop, notebook, and pens. All the essentials for a productive study session!" 
+                                 src="https://cdn.discordapp.com/assets/profile_effects/effects/2024-11-22/lofi-girl-study-break/intro.png" 
+                                 class="effect__01370" 
+                                 style="top: 0px; left: 0px;">
+                            <img alt="Lofi Girl's desk setup appears, showing off her signature headphones, study lamp, laptop, notebook, and pens. All the essentials for a productive study session!" 
+                                 src="https://cdn.discordapp.com/assets/profile_effects/effects/2024-11-22/lofi-girl-study-break/idle_cattail.png" 
+                                 class="effect__01370" 
+                                 style="top: 0px; left: 0px;">
+                            <img alt="Lofi Girl's desk setup appears, showing off her signature headphones, study lamp, laptop, notebook, and pens. All the essentials for a productive study session!" 
+                                 src="https://cdn.discordapp.com/assets/profile_effects/effects/2024-11-22/lofi-girl-study-break/idle_light.png" 
+                                 class="effect__01370" 
+                                 style="top: 0px; left: 0px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

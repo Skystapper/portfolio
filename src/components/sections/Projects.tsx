@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-// import { useGSAP } from '@gsap/react';
-import { IconScene } from '../common/IconScene';
+import SectionBackground from '../common/SectionBackground';
 
 interface Project {
   id: number;
@@ -13,27 +12,7 @@ interface Project {
   tags: string[];
   color: string;
   link: string;
-  category: string;
 }
-
-const ProjectIcon = ({ type }: { type: string }) => {
-  const ICON_MAP = {
-    ecommerce: '/icons/Animated_Editable_Online_Shopping_Free/shopping-on-mobile-1678135375206.glb',
-    ai: '/icons/Animated_Editable_Robot_Icon_Pack/robot-head-3d-animated-icon-467093345245.glb',
-    security: '/icons/security-lock-animated-3d-icon-396548429996.glb',
-    default: '/icons/file-setting-3d-animated-icon-611806266477.glb'
-  };
-
-  return (
-    <div className="absolute right-4 bottom-4 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity">
-      <IconScene
-        iconPath={ICON_MAP[type as keyof typeof ICON_MAP] || ICON_MAP.default}
-        scale={0.5}
-        spinAxis="x"
-      />
-    </div>
-  );
-};
 
 export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -48,7 +27,6 @@ export default function Projects() {
       tags: ['Three.js', 'GSAP', 'WebGL', 'JavaScript'],
       color: '#8b5cf6',
       link: '#',
-      category: 'default',
     },
     {
       id: 2,
@@ -57,7 +35,6 @@ export default function Projects() {
       tags: ['Next.js', 'GSAP', 'React', 'Tailwind CSS'],
       color: '#ec4899',
       link: '#',
-      category: 'ecommerce',
     },
     {
       id: 3,
@@ -66,7 +43,6 @@ export default function Projects() {
       tags: ['D3.js', 'GSAP', 'SVG', 'React'],
       color: '#0ea5e9',
       link: '#',
-      category: 'default',
     },
     {
       id: 4,
@@ -75,7 +51,6 @@ export default function Projects() {
       tags: ['GSAP', 'JavaScript', 'HTML/CSS', 'Locomotive Scroll'],
       color: '#10b981',
       link: '#',
-      category: 'default',
     },
   ];
 
@@ -184,11 +159,13 @@ export default function Projects() {
   };
 
   return (
-    <section 
-      id="projects" 
-      ref={sectionRef} 
-      className="relative py-32 overflow-hidden"
+    <SectionBackground
+      section="projects"
+      className="min-h-screen flex flex-col justify-center py-20"
+      particleDensity={80}
+      gradientColors={["transparent", "black/40", "black/70"]}
     >
+      <section id="projects" ref={sectionRef} className="container mx-auto px-4">
       <div className="container mx-auto px-4 mb-12">
         <h2 className="projects-title text-4xl md:text-5xl font-bold text-center">
           Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-600">Projects</span>
@@ -252,7 +229,6 @@ export default function Projects() {
                 View Project
               </a>
             </div>
-            <ProjectIcon type={project.category} />
           </div>
             );
           })}
@@ -268,5 +244,6 @@ export default function Projects() {
         </a>
       </div>
     </section>
+    </SectionBackground>
   );
 } 

@@ -1,0 +1,10 @@
+This is a placeholder for the click.mp3 file.
+
+To implement the click sound effect for the wheel navbar, please add an MP3 file named "click.mp3" in the public folder.
+
+You can find suitable click sound effects from free sound libraries like:
+1. https://freesound.org/
+2. https://mixkit.co/free-sound-effects/click/
+3. https://www.zapsplat.com/sound-effect-categories/clicks-and-taps/
+
+A short, subtle click sound (less than 0.5 seconds) works best for this UI element. 
