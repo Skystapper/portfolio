@@ -208,7 +208,7 @@ export default function WheelNavbar() {
         updateItemStyles()
       }, 50)
       
-      // Make the wheel draggable
+      // Make the wheel draggable with mobile optimization
       draggableRef.current = Draggable.create(wheelRef.current, {
         type: "y",
         bounds: {
@@ -219,6 +219,9 @@ export default function WheelNavbar() {
         edgeResistance: 0.85,
         overshootTolerance: 0.5,
         throwResistance: 0.65,
+        // Mobile touch optimizations
+        allowNativeTouchScrolling: false,
+        callbackScope: window,
         snap: {
           y: (y: number) => {
             const increment = itemHeight
