@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Orbitron, Space_Mono } from "next/font/google";
 import "./globals.css";
 import GsapInitializer from "@/components/ui/GsapInitializer";
@@ -27,7 +27,11 @@ export const metadata: Metadata = {
   description: "Creative coder building immersive web experiences in the digital cosmos",
   keywords: ["developer", "creative coding", "web development", "portfolio", "R.ked"],
   authors: [{ name: "R.ked" }],
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   themeColor: "#000000",
 };
 

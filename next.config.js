@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  distDir: 'out',
   experimental: {
     scrollRestoration: true,
   },
   images: {
-    domains: ['images.unsplash.com'],
+    domains: ['images.unsplash.com', 'cdn.discordapp.com'],
+    unoptimized: true, // Required for static export
   },
   // Add GSAP plugin configuration
   webpack: (config) => {
