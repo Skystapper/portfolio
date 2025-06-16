@@ -7,18 +7,24 @@ import * as THREE from 'three'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+// Utility function to handle basePath for assets
+function getAssetPath(path: string): string {
+  const basePath = process.env.NODE_ENV === 'production' ? '/portfolio' : ''
+  return `${basePath}${path}`
+}
+
 // Define icons for each section with their movement patterns
 const sectionIcons = {
   hero: [
     {
-      url: '/icons/bouncing-cube-animated-3d-icon-1317725137205.glb',
+      url: getAssetPath('/icons/bouncing-cube-animated-3d-icon-1317725137205.glb'),
       startPosition: [-12, 8, 2],
       endPosition: [-30, -10, 2], // Exits down and left
       triggerStart: 0,
       triggerEnd: 0.25
     },
     {
-      url: '/icons/floating-cubes-loading-animated-3d-icon-514489560289.glb',
+      url: getAssetPath('/icons/floating-cubes-loading-animated-3d-icon-514489560289.glb'),
       startPosition: [12, 8, 2],
       endPosition: [30, -10, 2], // Exits down and right
       triggerStart: 0,
@@ -27,7 +33,7 @@ const sectionIcons = {
   ],
   about: [
     {
-      url: '/icons/rotating-cube-loading-animated-3d-icon-323338265846.glb',
+      url: getAssetPath('/icons/rotating-cube-loading-animated-3d-icon-323338265846.glb'),
       startPosition: [30, 0, 2],
       endPosition: [40, 15, 2], // Moves up and further right
       triggerStart: 0.2,
@@ -36,7 +42,7 @@ const sectionIcons = {
   ],
   discord: [
     {
-      url: '/icons/rubik-cube-loading-animated-3d-icon-918042144125.glb',
+      url: getAssetPath('/icons/rubik-cube-loading-animated-3d-icon-918042144125.glb'),
       startPosition: [-30, 0, 2],
       endPosition: [-40, -15, 2], // Moves down and further left
       triggerStart: 0.4,
@@ -44,7 +50,7 @@ const sectionIcons = {
     },
     // Golden cube with multiple waypoints for proper path
     {
-      url: '/icons/rubik-cube-loading-animated-3d-icon-918042144125.glb',
+      url: getAssetPath('/icons/rubik-cube-loading-animated-3d-icon-918042144125.glb'),
       waypoints: [
         [-35, 25, 2],  // Start off-screen top-left
         [-12, 8, 2],   // Enter visible area upper-left
@@ -57,14 +63,14 @@ const sectionIcons = {
   ],
   projects: [
     {
-      url: '/icons/dropping-sphere-loading-animated-3d-icon-713943018271.glb',
+      url: getAssetPath('/icons/dropping-sphere-loading-animated-3d-icon-713943018271.glb'),
       startPosition: [-12, -8, 2],
       endPosition: [-30, -20, 2], // Exits further down and left
       triggerStart: 0.6,
       triggerEnd: 0.8
     },
     {
-      url: '/icons/spheres-abstract-shape-animated-3d-icon-1668763368472.glb',
+      url: getAssetPath('/icons/spheres-abstract-shape-animated-3d-icon-1668763368472.glb'),
       startPosition: [12, -8, 2],
       endPosition: [30, -20, 2], // Exits further down and right
       triggerStart: 0.6,
@@ -73,7 +79,7 @@ const sectionIcons = {
   ],
   skills: [
     {
-      url: '/icons/twisted-circle-abstract-shape-animated-3d-icon-1057449839409.glb',
+      url: getAssetPath('/icons/twisted-circle-abstract-shape-animated-3d-icon-1057449839409.glb'),
       startPosition: [0, -20, 2],
       endPosition: [-20, -30, 2], // Moves down and to the left
       triggerStart: 0.75,
@@ -83,14 +89,14 @@ const sectionIcons = {
   // New icons that appear during skills-to-contact transition
   skillsToContact: [
     {
-      url: '/icons/waving-plane-abstract-animated-3d-icon-772525492989.glb',
+      url: getAssetPath('/icons/waving-plane-abstract-animated-3d-icon-772525492989.glb'),
       startPosition: [40, 25, 2], // Starts off-screen top-right
       endPosition: [15, 5, 2], // Moves into view from top-right
       triggerStart: 0.8,
       triggerEnd: 0.95
     },
     {
-      url: '/icons/abstract-shape-animated-3d-icon-1573750599827.glb',
+      url: getAssetPath('/icons/abstract-shape-animated-3d-icon-1573750599827.glb'),
       startPosition: [-40, -25, 2], // Starts off-screen bottom-left
       endPosition: [-15, -5, 2], // Moves into view from bottom-left
       triggerStart: 0.8,
@@ -99,14 +105,14 @@ const sectionIcons = {
   ],
   contact: [
     {
-      url: '/icons/spiral-abstract-shape-animated-3d-icon-713416610389.glb',
+      url: getAssetPath('/icons/spiral-abstract-shape-animated-3d-icon-713416610389.glb'),
       startPosition: [-30, 5, 2],
       endPosition: [-40, 20, 2], // Exits up and further left
       triggerStart: 0.85,
       triggerEnd: 1.0
     },
     {
-      url: '/icons/circle-abstract-shape-animated-3d-icon-89237357186.glb',
+      url: getAssetPath('/icons/circle-abstract-shape-animated-3d-icon-89237357186.glb'),
       startPosition: [30, -5, 2],
       endPosition: [40, -20, 2], // Exits down and further right
       triggerStart: 0.85,
