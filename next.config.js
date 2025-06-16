@@ -4,6 +4,8 @@ const nextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   distDir: 'out',
+  basePath: '/portfolio',
+  assetPrefix: '/portfolio/',
   experimental: {
     scrollRestoration: true,
   },
