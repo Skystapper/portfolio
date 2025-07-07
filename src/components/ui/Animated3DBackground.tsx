@@ -46,7 +46,7 @@ const sectionIcons = {
       startPosition: [-30, 0, 2],
       endPosition: [-40, -15, 2], // Moves down and further left
       triggerStart: 0.4,
-      triggerEnd: 0.65
+      triggerEnd: 0.55
     },
     // Golden cube with multiple waypoints for proper path
     {
@@ -58,7 +58,7 @@ const sectionIcons = {
         [-35, -10, 2]  // Exit to bottom-left off-screen
       ],
       triggerStart: 0.05,
-      triggerEnd: 0.75
+      triggerEnd: 0.65
     }
   ],
   projects: [
@@ -66,15 +66,15 @@ const sectionIcons = {
       url: getAssetPath('/icons/dropping-sphere-loading-animated-3d-icon-713943018271.glb'),
       startPosition: [-12, -8, 2],
       endPosition: [-30, -20, 2], // Exits further down and left
-      triggerStart: 0.6,
-      triggerEnd: 0.8
+      triggerStart: 0.45,
+      triggerEnd: 0.65
     },
     {
       url: getAssetPath('/icons/spheres-abstract-shape-animated-3d-icon-1668763368472.glb'),
       startPosition: [12, -8, 2],
       endPosition: [30, -20, 2], // Exits further down and right
-      triggerStart: 0.6,
-      triggerEnd: 0.8
+      triggerStart: 0.45,
+      triggerEnd: 0.65
     }
   ],
   skills: [
