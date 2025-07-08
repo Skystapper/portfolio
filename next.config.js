@@ -3,6 +3,7 @@ const nextConfig = {
   // Enable static export for GitHub Pages
   output: 'export',
   trailingSlash: true,
+  basePath: '/portfolio',
   experimental: {
     scrollRestoration: true,
   },
