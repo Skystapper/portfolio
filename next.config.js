@@ -1,12 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove static export settings for development
+  // Enable static export for GitHub Pages
+  output: 'export',
+  trailingSlash: true,
   experimental: {
     scrollRestoration: true,
   },
   images: {
     domains: ['images.unsplash.com', 'cdn.discordapp.com'],
-    // Remove unoptimized for development
+    unoptimized: true, // Required for static export
   },
   // Configure for tunnel access
   async headers() {
