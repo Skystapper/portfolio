@@ -40,8 +40,42 @@ const socialIcons = [
   }
 ];
 
+// Mobile-specific social icons (replace Instagram with Gmail)
+const mobileSocialIcons = [
+  {
+    name: 'Twitter',
+    url: 'https://twitter.com/',
+    icon: 'skill-icons:twitter',
+    color: '#1DA1F2',
+    cursorEffect: 'twitter'
+  },
+  {
+    name: 'Telegram',
+    url: 'https://t.me/',
+    icon: 'logos:telegram',
+    color: '#26A5E4',
+    cursorEffect: 'telegram'
+  },
+  {
+    name: 'Gmail',
+    url: 'mailto:skystapper@gmail.com',
+    icon: 'logos:google-gmail',
+    color: '#EA4335',
+    cursorEffect: 'gmail'
+  },
+  {
+    name: 'Discord',
+    url: 'https://discord.com/users/908657241505280021',
+    icon: 'logos:discord-icon',
+    color: '#5865F2',
+    cursorEffect: 'discord'
+  }
+];
+
 export default function DiscordProfileCard() {
   const [isMaximized, setIsMaximized] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
   const [name, setName] = useState("R.ked");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -58,6 +92,7 @@ export default function DiscordProfileCard() {
   const avatarRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
+  const flipContainerRef = useRef<HTMLDivElement>(null);
   const [currentEffectKey, setCurrentEffectKey] = useState('lofi-girl-study-break');
   const [currentAvatarDecoration, setCurrentAvatarDecoration] = useState(avatarDecorations[16]); // default to lofi-girl-study-break and matching decoration
   
@@ -134,8 +169,26 @@ ${email || "[Your email]"}
     setShowEmailOptions(prev => !prev);
   };
 
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileDevice = window.innerWidth <= 768 || 'ontouchstart' in window;
+      setIsMobile(isMobileDevice);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const handleMaximize = () => {
     if (!cardRef.current) return;
+    
+    // On mobile, use flip functionality instead of maximize
+    if (isMobile) {
+      handleFlip();
+      return;
+    }
     
     setIsMaximized(prev => !prev);
     
@@ -200,6 +253,19 @@ ${email || "[Your email]"}
         });
       }
     }
+  };
+
+  const handleFlip = () => {
+    if (!flipContainerRef.current) return;
+    
+    setIsFlipped(prev => !prev);
+    
+    // Flip animation using rotateX for vertical flip - faster and snappier
+    gsap.to(flipContainerRef.current, {
+      rotateX: isFlipped ? 0 : 180,
+      duration: 0.35,
+      ease: 'power2.out'
+    });
   };
 
   const handleCloseMaximized = (e: React.MouseEvent) => {
@@ -802,6 +868,56 @@ ${email || "[Your email]"}
                                     </div>
                                 </div>
                             </div>
+                            
+                {isMobile ? (
+                  // Mobile flip container
+                  <div 
+                    ref={flipContainerRef}
+                    className={styles.flipContainer}
+                    style={{ 
+                      transformStyle: 'preserve-3d',
+                      perspective: '1000px'
+                    }}
+                  >
+                    {/* Front side - Bio */}
+                    <div className={`${styles.flipSide} ${styles.flipFront}`}>
+                      <div 
+                        ref={bioTextRef}
+                        className={styles['text-sm/normal_cf4812']}
+                      >
+                        In the end everything exist solely to help us kill some time until we die
+                      </div>
+                    </div>
+                    
+                    {/* Back side - Social Media */}
+                    <div className={`${styles.flipSide} ${styles.flipBack}`}>
+                      <div className={styles.mobileSocialGrid}>
+                        {mobileSocialIcons.map((icon, index) => (
+                          <a 
+                            key={index}
+                            href={icon.url} 
+                            className={`${styles.mobileSocialIcon} socialIcon`}
+                            style={{ 
+                              '--icon-color': icon.color 
+                            } as CSSProperties}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <div className={styles.mobileIconWrapper}>
+                              <Icon 
+                                icon={icon.icon} 
+                                width="28" 
+                                height="28" 
+                                className={styles.iconify}
+                              />
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  // Desktop - normal bio section
                             <div>
                   <div 
                     ref={bioTextRef}
@@ -810,8 +926,9 @@ ${email || "[Your email]"}
                                     In the end everything exist solely to help us kill some time until we die
                                 </div>
                             </div>
+                )}
                 
-                {isMaximized && (
+                {isMaximized && !isMobile && (
                   <div className={styles.contactForm}>
                     <div className={styles.emailOptionsWrapper}>
                       <button 
@@ -885,7 +1002,10 @@ ${email || "[Your email]"}
                     ref={placeholderRef}
                     className={styles.placeholder__1b31f}
                   >
-                    Message @R.ked
+                    {isMobile 
+                      ? (isFlipped ? "Show Bio" : "Show Socials") 
+                      : "Message @R.ked"
+                    }
                   </div>
                   <div className={styles.emojiButton}>
                     <svg 

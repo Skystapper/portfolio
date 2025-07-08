@@ -979,3 +979,86 @@ svg.avatarDecoration__44b0c foreignObject img {
   color: white;
   font-weight: 500;
 }
+
+/* Mobile flip animation styles */
+.flipContainer {
+  position: relative;
+  width: 100%;
+  height: 72px; /* Same height as bio text box */
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease-out;
+}
+
+.flipSide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flipFront {
+  transform: rotateX(0deg);
+}
+
+.flipBack {
+  transform: rotateX(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileSocialGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 72px;
+  align-items: center;
+}
+
+.mobileSocialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-normal);
+  padding: 6px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.mobileSocialIcon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.mobileIconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.mobileSocialIcon:hover .iconify {
+  filter: drop-shadow(0 0 6px var(--icon-color));
+}
+
+/* Discord icon special styling for mobile */
+.mobileSocialIcon[href*="discord.com"] .iconify {
+  filter: brightness(0) invert(1);
+}
+
+.mobileSocialIcon[href*="discord.com"]:hover .iconify {
+  filter: brightness(0) invert(1) drop-shadow(0 0 4px #5865F2) drop-shadow(0 0 8px #5865F2);
+}
