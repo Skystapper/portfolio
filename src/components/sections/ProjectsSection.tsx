@@ -4,13 +4,19 @@ import { Icon } from '@iconify/react'
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 
+// Utility function to handle basePath for assets
+function getAssetPath(path: string): string {
+  const basePath = process.env.NODE_ENV === 'production' ? '/portfolio' : ''
+  return `${basePath}${path}`
+}
+
 const projects = [
   {
     id: 1,
     title: 'W.E.B.',
     description: 'A next-generation Windows application for discovering, filtering, and downloading millions of high-quality interactive wallpapers, music, and videos.',
     longDescription: `W.E.B. is my latest and most proud creation: a powerful application for Windows OS that lets you search through millions of community-made, high-quality interactive wallpapers and download them with ease. It features advanced filtering and sorting systems, making it effortless to find the perfect wallpaper. But that's not all—W.E.B. also enables you to download music and videos from the internet in high quality. Built with Tauri, it harnesses the power of both TypeScript and Rust. Tauri is a modern framework for building fast, secure desktop applications using web technologies and Rust.`,
-    image: '/WEB.png',
+    image: getAssetPath('/WEB.png'),
     technologies: ['Tauri', 'TypeScript', 'Rust', 'Animation Frameworks'],
     features: [
       'Advanced search, filtering, and sorting for millions of interactive wallpapers',
@@ -29,7 +35,7 @@ const projects = [
     title: 'CodeCraft',
     description: 'A highly professional, ultra-modern tech website for industrial companies to present themselves as apex creators, with immersive UI/UX and a next-level admin/blog system.',
     longDescription: `CodeCraft is a highly professional yet ultra-modern tech website crafted for industrial companies who want to present themselves as apex creators. Every scroll, hover, and click is designed to immerse you in the experience, with seamless transitions that make the journey feel continuous and amazing—including light/dark theme transitions. Built with Next.js and powered by MongoDB, CodeCraft features a highly efficient admin panel with its own independent blog creation section. This blog system easily surpasses popular blog-specific platforms, supporting markdown formatting and direct image integration from Unsplash and Pexels with a single click. Draft, schedule, and publish your content—just how you like.`,
-    images: ['/Tech.png', '/TechLight.png', '/TechBlog.png', '/TechProjects.png'],
+    images: [getAssetPath('/Tech.png'), getAssetPath('/TechLight.png'), getAssetPath('/TechBlog.png'), getAssetPath('/TechProjects.png')],
     technologies: ['Next.js', 'MongoDB', 'Tailwind CSS', 'TypeScript'],
     features: [
       'Immersive UI/UX with seamless transitions and theme switching',
@@ -48,7 +54,7 @@ const projects = [
     title: 'LegalEase',
     description: 'A legal website that breaks the mold with a unique color theme, professional authority, and a modern, effective admin panel.',
     longDescription: `LegalEase was my first project, aimed at achieving the highest level of professionalism and simplicity—without falling into the trap of the typical blue-themed legal websites that blend into the crowd. I challenged myself to use color theory in a reverse-psychology way, choosing a theme that would stand out and leave a lasting impression of authority. The site is as professional as possible, with subtle modern animations to keep the experience engaging. LegalEase features a highly effective admin panel for tracking visits, user views, and resolving queries directly. Built with Next.js and PostgreSQL as its database, LegalEase is designed to be both authoritative and memorable.`,
-    images: ['/legal.png', '/LegalTrademark.png', '/AboutLegal.png'],
+    images: [getAssetPath('/Legal.png'), getAssetPath('/LegalTrademark.png'), getAssetPath('/AboutLegal.png')],
     technologies: ['Next.js', 'PostgreSQL', 'TypeScript', 'Tailwind CSS'],
     features: [
       'Unique, authority-inspiring color theme',
@@ -65,7 +71,7 @@ const projects = [
 ]
 
 // Add array of images for the Tech Site (Neural Network Visualizer)
-const techImages = ['/Tech.png', '/TechLight.png', '/TechBlog.png', '/TechProjects.png']
+const techImages = [getAssetPath('/Tech.png'), getAssetPath('/TechLight.png'), getAssetPath('/TechBlog.png'), getAssetPath('/TechProjects.png')]
 
 export default function ProjectsSection() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -76,10 +82,10 @@ export default function ProjectsSection() {
   const [currentTechImageIndex, setCurrentTechImageIndex] = useState(0)
 
   // Array of images for the Cosmic Portfolio project
-  const portfolioImages = ['/WEB.png', '/WEBmusic.png', '/WEBsearch.png', '/WEBwallpaper.png']
+  const portfolioImages = [getAssetPath('/WEB.png'), getAssetPath('/WEBmusic.png'), getAssetPath('/WEBsearch.png'), getAssetPath('/WEBwallpaper.png')]
   
   // Array of images for the Legal Trademark project
-  const legalImages = ['/legal.png', '/LegalTrademark.png', '/AboutLegal.png']
+  const legalImages = [getAssetPath('/Legal.png'), getAssetPath('/LegalTrademark.png'), getAssetPath('/AboutLegal.png')]
 
   useEffect(() => {
     setMounted(true)
